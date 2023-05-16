@@ -1,0 +1,95 @@
+import java.awt.Point;
+import java.util.Comparator;
+import java.util.Random;
+
+public class L5_232TCar
+{
+    public static <AnyType> void sortArr(AnyType[] arr, Comparator<? super AnyType> cmp)
+    {
+        for(int i = 0; i < arr.length; i++)
+        {
+            int min = i;
+
+            for(int j = i; j < arr.length; j++)
+            {
+                if(cmp.compare(arr[j], arr[min]) < 0)
+                {
+                    min = j;
+                }
+            }
+
+            AnyType temp = arr[i];
+            arr[i] = arr[min];
+            arr[min] =  temp;
+        }
+
+    }
+
+    public static <AnyType> void printArray(AnyType[] array, int numPerLine)
+    {
+        int count = 0;
+
+        for (AnyType anyType : array)
+        {
+            System.out.print(anyType + " ");
+            ++count;
+
+            if (count == numPerLine)
+            {
+                System.out.println();
+                count = 0;
+            }
+        }
+
+        System.out.println();
+    }
+
+    static class DescendingOrder implements Comparator<Point>
+    {
+        public int compare( Point p1, Point p2 )
+        {
+            if (p2.x == p1.x)
+            {
+                return p2.y - p1.y;
+            }
+            else return p2.x - p1.x;
+            }
+    }
+
+    static class AscendingOrder implements Comparator<Point>
+    {
+        public int compare( Point p1, Point p2 )
+        {
+            if (p2.x == p1.x)
+            {
+                return p1.y - p2.y;
+            }
+            else
+                return p1.x - p2.x;
+        }
+    }
+
+    public static void main(String[] args)
+    {
+
+        Point[] test = new Point[20];
+
+        Random r = new Random();
+
+        for (int i = 0; i < test.length; i++)
+        {
+            test[i] = new Point(99 - r.nextInt(201), 99 - r.nextInt(201));
+        }
+
+        System.out.println("Original Array: \n");
+        printArray(test, 4);
+
+        System.out.println("Sorted in ascending order: ");
+        sortArr(test, new AscendingOrder());
+        printArray(test, 1);
+
+        System.out.println("Sorted in descending order: ");
+        L5_232TCar.sortArr(test, new DescendingOrder());
+        printArray(test, 1);
+    }
+}
